@@ -2,7 +2,7 @@ import streamlit as st
 from classification import classify_soil
 from correlations import predict_cbr, predict_cu, predict_phi, subgrade_rating
 from confidence import adjust_confidence
-
+from plasticity_chart import create_plasticity_chart
 st.set_page_config(page_title="SL Soil Classification Tool", layout="centered")
 
 st.title("Sierra Leone Regional Soil Classification & Prediction Tool")
@@ -65,3 +65,10 @@ if st.sidebar.button("Classify Soil"):
 
     st.subheader("Model Confidence")
     st.write(final_conf)
+st.subheader("Plasticity Chart")
+
+if PI is not None and LL is not None:
+    fig = create_plasticity_chart(LL, PI)
+    st.plotly_chart(fig, use_container_width=True)
+else:
+    st.warning("Plasticity chart requires LL and PL values.")

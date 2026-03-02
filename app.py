@@ -27,14 +27,14 @@ color = st.sidebar.selectbox("Soil Color", ["Unknown", "Red", "Reddish Brown", "
 if st.sidebar.button("Classify Soil"):
 
     # Convert zeros to None
-    LL = LL if LL > 0 else None
-    PL = PL if PL > 0 else None
-    fines = fines if fines > 0 else None
-    sand = sand if sand > 0 else None
-    gravel = gravel if gravel > 0 else None
-    N = N if N > 0 else None
-    MDD = MDD if MDD > 0 else None
-    Gs = Gs if Gs > 0 else None
+    LL = LL if LL != 0 else None
+    PL = PL if PL != 0 else None
+    fines = fines if fines != 0 else None
+    sand = sand if sand != 0 else None
+    gravel = gravel if gravel != 0 else None
+    N = N if N != 0 else None
+    MDD = MDD if MDD != 0 else None
+    Gs = Gs if Gs != 0 else None
     color = None if color == "Unknown" else color
 
     USCS, AASHTO, soil_group, PI, base_conf = classify_soil(
@@ -65,10 +65,12 @@ if st.sidebar.button("Classify Soil"):
 
     st.subheader("Model Confidence")
     st.write(final_conf)
-st.subheader("Plasticity Chart")
 
-if PI is not None and LL is not None:
-    fig = create_plasticity_chart(LL, PI)
-    st.plotly_chart(fig, use_container_width=True)
-else:
-    st.warning("Plasticity chart requires LL and PL values.")
+    # ✅ Plasticity chart INSIDE button block
+    st.subheader("Plasticity Chart")
+
+    if PI is not None and LL is not None:
+        fig = create_plasticity_chart(LL, PI)
+        st.plotly_chart(fig, use_container_width=True, theme="streamlit")
+    else:
+        st.warning("Plasticity chart requires LL and PL values.")
